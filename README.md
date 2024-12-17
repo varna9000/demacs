@@ -14,4 +14,4 @@ Below are the steps which work on DosBox.
 The file contains all environment variables needed for Emacs to run properly. You can teak them at your liking. Just make sure you read the original README by the authors of the port. It's in the repo.
 
 
-[Emacs for MS DOS](emacs-screenshot.png)
+![Emacs for MS DOS](emacs-screenshot.png)
