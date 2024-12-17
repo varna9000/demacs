@@ -1,6 +1,6 @@
 # Emacs 18.55 for MS DOS (demacs)
 
-This repository contains configured MS DOS Emacs 18.55 from 1999. I've fixed the directory structure and set Environment variables. It's ready to run.
+This repository contains configured MS DOS Emacs 18.55 from 1991. I've fixed the directory structure and set Environment variables. It's ready to run.
 
 ### How to run
 
