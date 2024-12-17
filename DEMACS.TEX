@@ -1,0 +1,1382 @@
+\input jtexinfo.tex @c -*- texinfo -*-
+@settitle Demacs, 386/486 DOS version of GNU Emacs
+@setfilename demacs.info
+@iftex
+@a4book
+@c @smallbook
+@c @headings off
+
+@titlepage
+@sp 4
+@center @titlefont{Using Demacs}
+@sp 2
+@center A Guide to the 386/486 DOS version of GNU Emacs
+@sp 2
+@center Version 1.2.0
+@center December 12, 1991
+@sp 6
+@center @secrm{Manabu Higshida}
+@center @t{manabu@@sigmath.osaka-u.ac.jp}
+@center Osaka University, JAPAN
+@sp 2
+@center and
+@sp 2
+@center {@secrm HIRANO Satoshi}
+@center @t{hirano@@tkl.iis.u-tokyo.ac.jp}
+@center University of Tokyo, Japan
+@page
+
+@rightline {Special Thanks to}
+@sp 1
+@rightline {Morgan Schweers}
+@rightline {Shigeki Yoshida}
+@rightline {Junn Ohta}
+@rightline {Toshihiko Shimokawa}
+@rightline {Makoto Matsushita}
+@sp 1
+@vskip 0pt plus 1filll
+@leftline{Copyright @copyright{} 1991 HIRANO Satoshi, Halca Computer Science Laboratory}
+@leftline{Copyright @copyright{} 1991 Manabu Higashida}
+
+Demacs is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License version 1 as published by
+the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License (this package includes it as file @file{copying})
+for more details.
+@end titlepage
+@page
+@end iftex
+
+
+@node Top, Overview, (dir), (dir)
+
+@menu
+* Overview::     
+* Installation:: 
+* Invocation::   
+* Features::      
+* Restrictions:: 
+* Compilation::  
+* Appendix::     
+
+These nodes contains followings.
+
+Overview:
+* Version::                Current Version.
+* Platform::               Platforms.
+* BugReport::              Bug Report.
+
+Installation:
+* FileList::               Contents of This Distribution Kit.
+* InstallationProcedure::  How to Install.
+* InstallationExample::    Sample Session to Install.
+
+Invocation:
+* EnvironmentVariable::    Environment Variables.
+* OptionsOfdemacs.exe::    Options of DOS Extender demacs.exe.
+* OptionsOfDemacs::        Options of Demacs.
+
+Features:
+* FileType::               File Type: Text or Binary Translation.
+* Pass8::                  "8bit clean" Display Mode.
+* int86::                  8086 Software Interrupt.
+* MachineType::            Machine Specified Features.
+* OtherFeatures::          Other Additional Demacs Features.
+
+Appendix:
+* TerminalFeatures::       Terminal Specified Features.
+* DiffsFromUNIX::          Differences from UNIX Version.
+* Index::                  Index: Functions and Variables.
+@end menu
+
+
+@node Overview, Version, Top, (dir)
+@chapter Demacs version 1.2.0
+
+Demacs---386/486 DOS version of GNU Emacs.
+
+@menu
+* Version::    Current Version.
+* Platform::   Platforms.
+* BugReport::  Bug Report.
+@end menu
+
+
+@node Version, Platform, Overview, Overview
+@section Current Version
+
+Demacs is currently based on GNU Emacs version @b{18.55} (@b{partly 18.57}).
+
+Demacs version itself is @w{@b{1.2.0} (@b{1991/12/12})}.
+
+@deffn Command demacs-version
+Return string describing the version of Demacs that is running.
+@end deffn
+
+
+@node Platform, BugReport, Version, Overview
+@section Platforms
+
+@table @key
+@item Hardware
+@b{386/486 based DOS machines}---IBM PC and its compatible, AX, J-3100, 
+or NEC PC-9801, High resolusion PC-98 and its compatible EPSON PC-386
+
+@item Software
+@b{MSDOS 3.0 or later}
+
+@b{XMS} manager (@file{HIMEM.SYS}) and @b{VCPI} memory manager
+(@file{EMM386.EXE}, @file{QEMM}, etc.) compatible.@refill
+
+Demacs does not support @b{DPMI}, thus it can not be used with extended
+mode on Windows.@refill
+@end table
+
+
+@node BugReport, Installation, Platform, Overview
+@section Bug Report
+
+When you have troubles with using Demacs, please follow the following
+steps before inquire us.@refill
+
+First, read this README and the online-manuals (with Info Browser) to
+find answers. Next, consult to Emacs experts around you or on the
+networks. In case you decide to send a mail to the authors, you must
+read "Bugs" section in the Emacs manual before sending the mail.@refill
+
+Suggestions and bug fixes are welcome with next address.@refill
+
+@example
+demacs-bugs@@sigmath.osaka-u.ac.jp
+@end example
+
+If you want to know current status about Demacs, send empty mail to
+next address.
+
+@example
+demacs@@sigmath.osaka-u.ac.jp
+@end example
+
+@noindent
+We will reply your mail with latest information, automatically.
+
+
+@node Installation, FileList, BugReport, Top
+@chapter Installation
+
+@menu
+* FileList::               Contents of This Distribution Kit.
+* InstallationProcedure::  How to Install.
+* InstallationExample::    Sample Session to Install.
+@end menu
+
+
+@node FileList, InstallationProcedure, Installation, Installation
+@section Contents of This Distribution Kit
+
+The package consists of two archives; @file{dem120e.lzh} and
+@file{dem120s.lzh}. You need @b{LHarc} or @b{LHa} utility to unpack
+these archives. Don't forget to use @code{/mx} switches with @code{-x}
+option to unpack them. For example do as following.@refill
+
+@example
+lharc x /mx dem120e.lzh
+lharc x /mx dem120s.lzh
+@end example
+
+@noindent
+And similarly apply these options to the archives which are contained by
+them.
+
+After unpacking, following files will appear.
+
+@file{dem120e.lzh} (executables)
+
+@ifinfo
+@display
+readme            this file
+demacs.tex        texinfo version of @file{readme}
+demacs.dvi        compiled @file{demacs.tex} by TeX
+copying           GNU General Public Licence
+copying.dj        DJGCC copyright notice
+termcap           sample termcap file
+_emacs            sample startup file
+bin\demacspc.exe  DOS extender for IBM PC and its compatible machines
+bin\demacs98.exe  DOS extender for PC-9801, PC-386 series
+bin\demacs        demacs object file (stripped)
+bin\temacs        `plain' demacs object file (stripped)
+etc.lzh           emacs documentation string file and etc.
+lisp.lzh          includes lisp files which are necessary to run
+edired.lzh        enhanced dired-mode
+@end display
+@end ifinfo
+
+@tex
+% \vskip \baselineskip
+\halign{\qquad \tt #\hfil &\qquad #&\rm #\hfil\cr
+readme            &&this file\cr
+demacs.tex        &&texinfo version of {\tt readme}\cr
+demacs.dvi        &&compiled {\tt demacs.tex} by \TeX\cr
+copying           &&GNU General Public Licence\cr
+copying.dj        &&DJGCC copyright notice\cr
+termcap           &&sample termcap file\cr
+\_emacs           &&sample startup file\cr
+bin$\backslash$demacspc.exe  &&DOS extender for IBM PC and its compatible machines\cr
+bin$\backslash$demacs98.exe  &&DOS extender for PC-9801, PC-386 series\cr
+bin$\backslash$demacs        &&demacs object file (stripped)\cr
+bin$\backslash$temacs        &&`plain' demacs object file (stripped)\cr
+etc.lzh          &&emacs documentation string file and etc.\cr
+lisp.lzh         &&includes lisp files which are necessary to run\cr
+edired.lzh       &&enhanced dired-mode\cr
+}
+@end tex
+
+
+@file{dem120s.lzh}  (source files)
+
+@ifinfo
+@display
+src\diffs.lzh       includes only different files from the original
+lisp\diffs.lzh      includes only different files from the original 
+go32_98\source.lzh  PC-9801 version go32 DOS extender from DJGCC 
+go32_pc\source.lzh  IBM PC version go32 DOS extender from DJGCC    
+@end display
+@end ifinfo
+
+@tex
+% \vskip \baselineskip
+\halign{\qquad \tt #\hfil &\qquad #&\rm #\hfil\cr
+src$\backslash$diffs.lzh       &&includes only different files from the original\cr
+lisp$\backslash$diffs.lzh      &&includes only different files from the original\cr
+go32\_98$\backslash$source.lzh  &&PC-9801 version go32 DOS extender from DJGCC\cr
+go32\_pc$\backslash$source.lzh  &&IBM PC version go32 DOS extender from DJGCC\cr 
+}
+@end tex
+
+@noindent
+NOTE: 
+
+This package only includes lisp files which are modified for Demacs.
+Original and/or other useful lisp stuff can be obtained from various FTP
+sites (for example @code{ftp.sigmath.osaka-u.ac.jp}) or from:@refill
+
+@display
+Free Software Foundation, Inc.
+675 Mass Ave, Cambridge, MA 02139, USA
+@end display
+
+
+@node InstallationProcedure, InstallationExample, FileList, Installation
+@section How to Install
+
+Demacs requires special version of @file{go32.exe} DOS extender. This
+package includes it with its name @file{bin\demacspc.exe} for IBM PC or
+@file{bin\demacs98.exe} for PC-9801 series. You should use one of them
+with renameing to @file{demacs.exe}.@refill
+
+Since @code{go32.exe} which came along with the package of DJ's GCC/G++
+version 1.05 can not handle @kbd{Ctrl-C} properlly, we modified it to
+work correctly. And we made some changes to be able to handle more DOS
+function call, and enhanced its memory management strategy (detail, see
+below).@refill
+
+Installation procedure is quite easy. 
+
+@enumerate
+@item
+If your system is IBM PC variant (including AX and J-3100 series), copy
+@file{bin/demacspc.exe} to the directory in @var{PATH} with its name
+@file{demacs.exe}.@refill
+
+If your system is NEC PC-9801 or EPSON PC-386 series, copy
+@file{bin/demacs98.exe} to the directory in @var{PATH} with its name
+@file{demacs.exe}.@refill
+
+@item
+Copy @file{bin\demacs} in the same directory with @file{demacs.exe}.
+
+@item
+Create @file{lisp} and @file{etc} directory in @file{\lib\emacs}
+directory.@refill
+
+@item
+If you want to use lisp library, get original lisp files from somewhere
+and copy them in @file{\lib\emacs\lisp} directory. Then unpack
+@file{lisp.lzh} in @file{\lib\emacs} directory.@refill
+
+@item
+Unpack @file{etc.lzh} in @file{\lib\emacs} directory.
+
+@item
+Set @var{TERM} environment variable for your system (See following example).
+
+@item
+Set @var{TERMCAP} variable if @file{termcap} file is not stay under
+@file{\etc}.@refill
+
+@item
+Prepare your @file{_emacs} (@file{.emacs} on Unix system) under your
+@var{HOME} directory if you need it.@refill
+@end enumerate
+
+
+@node InstallationExample, Invocation, InstallationProcedure, Installation
+@section Sample Session to Install
+
+@example
+C> copy bin\demacspc.exe \tools\bin\demacs.exe (IBM PC, AX, J-3100)
+C> copy bin\demacs \tools\bin
+     or
+C> copy bin\demacs98.exe \tools\bin\demacs.exe (PC-9801, PC-386)
+C> copy bin\demacs \tools\bin
+
+C> mkdir \lib\emacs
+C> mkdir \lib\emacs\lisp
+C> mkdir \lib\emacs\etc
+C> copy lisp.lzh \lib\emacs
+C> copy etc.lzh \lib\emacs
+C> cd \lib\emacs
+C> lharc x /mx lisp.lzh
+C> lharc x /mx etc.lzh
+C> del lisp.lzh
+C> del etc.lzh
+
+C> set TERM=ibmpc  (IBM PC)
+      or
+   set TERM=j3100  (J-3100)
+      or
+   set TERM=pc98   (PC-9801, PC-386)
+
+C> set TERMCAP=c:\etc\termcap   (IBM PC, J-3100)
+     or
+   set TERMCAP=a:\etc\termcap   (PC-9801, PC-386)
+
+C> set HOME=c:\home (your startup file '_emacs' is placed)
+@end example
+
+
+@node Invocation, EnvironmentVariable, InstallationExample, Top
+@chapter Invocation
+
+@menu
+* EnvironmentVariable::  Environment Variables.
+* OptionsOfdemacs.exe::  Options of DOS Extender demacs.exe.
+* OptionsOfDemacs::      Options of Demacs.
+@end menu
+
+
+@node EnvironmentVariable, OptionsOfdemacs.exe, Invocation, Invocation
+@section Environment Variables
+
+@table @code
+@item C>set GO32TMP=c:/tmp
+directory where swapped files are placed (see DJGCC's readme).
+
+@item C>set TERM=ibmpc
+entry name of @file{termcap}.
+
+@item C>set TERMCAP=c:/etc/termcap
+directory where @file{termcap} file are placed.
+
+@item C>set HOME=c:/home
+directory where startup file @file{_emacs} are placed.
+
+@item C>set TZ=JST-9
+time zone.
+
+@item C>set USER=manabu
+your name up to 8 characters.
+
+@item C>set EMACSLOADPATH=d:/emacs/lisp
+set lisp load path if you don't use standard path @file{/lib/eamcs/lisp}.
+
+@item C>set EMACSEXECPATH=d:/emacs/etc
+set etc load path if you don't use standard path @file{/lib/emacs/etc}.
+
+@item C>set DEMACS_KEEP=1024
+amount of extended memory to keep (detail, see below).
+
+@item C>set SHELL=c:\command.com
+your command interpreter path.
+@end table
+
+
+@node OptionsOfdemacs.exe, OptionsOfDemacs, EnvironmentVariable, Invocation
+@section Options of DOS Extender @code{demacs.exe}
+
+@table @code
+@item -keep [@var{num}]
+When @code{demacs.exe} invokes a child process, @code{demacs.exe} does
+not swap out contents of the extended memory to a disk. If @var{num} is
+specified, @code{demacs.exe} uses up to @var{num} killo bytes of
+extended memory.@refill
+
+You should use this option with XMS or VCPI memory manager. If not, may
+cause violation.
+@end table
+
+@noindent
+More about @code{-keep} opiton:
+
+@code{demacs.exe} provides virtual memory mechanism. If an application
+(e.g. Demacs) requires more memory than equipped real memory,
+@code{demacs.exe} write out a portion of real memory to a disk in order
+to make a free memory, then @code{demacs.exe} assigns the new free
+memory to the application. This is called ``swapping''.@refill
+
+Swapping does not only happen when real memory shortage, but also
+happens when @code{demacs.exe} calls a child process. That is, before
+execution of the child process, @code{demacs.exe} swapps out all of
+allocated memory to a disk so that the child process can use memory.
+Unfortunatly, swapping takes very long time because Demacs is a huge
+program.@refill
+
+In order to eliminate this swapping time, our @code{demacs.exe} can take
+@code{-keep} option. @code{-keep} option requests to @code{demacs.exe}
+NOT to swap out contents of extended memory (conventional memory (less
+than 640KB) is always swapped out).@refill
+
+In case you use @b{XMS} driver such as @file{himem.sys}, since
+@code{demacs.exe} obtains all of free extended memory at startup, a
+child process can not use any extended memory (Remember GCC/G++ requires
+extended memory).  You can reserve extended memory for the child process
+by following @var{num} to @code{-keep}, e.g. `@w{@code{-keep
+@var{1024}}}'. @var{num} which is killo byte unit number limits amount
+of usage of extended memory by @code{demacs.exe}. If less amount of
+extended memory is available than @var{num} at startup,
+@code{demacs.exe} uses all of extended memory.@refill
+
+Otherwise in case you use @b{VCPI} driver such as @code{QEMM} or
+@code{EMM386}, @code{demacs.exe} gets extended memory on demand basis. 
+`@w{@code{-keep @var{num}}}' limits amount of extended memory used by
+@code{demacs.exe} to @var{num} killo bytes.@refill
+
+The following table shows a brief summary.
+
+
+@ifinfo
+@example
+              | swap out          |
+              | extended memory   |
+              | at fork child     | extended memory for child
+--------------+-------------------+------------------------------
+without -keep |  YES              | all of extended memory at startup
+-keep         |  NO               | nothing
+-keep <num>   |  NO               | extended memory at startup - num
+@end example
+@end ifinfo
+
+@tex
+\vskip \baselineskip
+\indent\vbox{\offinterlineskip
+\halign{\tt #\hfil &\quad\vrule #\quad&\rm #\hfil &\quad\vrule #\quad&\rm #\hfil\cr
+            && swap out        && \cr
+            && extended memory && \cr
+            && at fork child   && extended memory for child\cr
+\omit&height2pt&\omit&&\omit\cr
+\noalign{\hrule}\cr
+\omit&height2pt&\omit&&\omit\cr
+without -keep   && YES &&  all of extended memory at startup\cr
+-keep           && NO  &&  nothing\cr
+-keep {\sl num} && NO  &&  extended memory at startup $-$ {\sl num}\cr
+}}
+\vskip \baselineskip
+@end tex
+
+Too small @var{num} makes Demacs slower. I recommend to set @var{num} at
+least 512.
+
+Example (Demacs uses 1024KB extended memory):
+
+@example
+demacs.exe -keep 1024
+@end example
+
+@var{num} can be also specified by @var{DEMACS_KEEP} environment
+variable. If both environment variable and option are specified, option
+has priority. If you don't need to specify @var{num} with @code{-keep}
+option, specify the value @code{0} with this environment variable.@refill
+
+
+@node OptionsOfDemacs, Features, OptionsOfdemacs.exe, Invocation
+@section Options of Demacs
+
+Type @code{demacs [-keep [@var{num}]] [options]} to invoke Demacs. If
+you need more information, see ``GNU Emacs manual''.@refill
+
+
+@node Features, FileType, OptionsOfDemacs, Top
+@chapter Features
+
+@menu
+* FileType::       File Type: Text or Binary Translation.
+* Pass8::          "8bit clean" Display Mode.
+* int86::          8086 Software Interrupt.
+* MachineType::    Machine Specified Features.
+* OtherFeatures::  Other Additional Demacs Features.
+@end menu
+
+
+@node FileType, TranslateMode, Features, Features
+@section File Type: Text or Binary Translation
+
+@menu
+* TranslateMode::     Translation Mode.
+* BufferManagement::  Buffer Management.
+* ReadingFiles::      Reading Files into Demacs Buffers.
+* WritingFiles::      Writing Buffers into Files.
+* ProcessI/O::        Process I/O.
+@end menu
+
+
+@node TranslateMode, BufferManagement, FileType, FileType
+@subsection Translation Mode
+
+On MS-DOS file system, a line is ended with @key{CR} (@t{0x0d})/@key{LF}
+(@t{0x0a}) characters and a file is ended with @kbd{Ctrl-Z} character. 
+But on UNIX file system, a line is ended with only @key{LF} character,
+and end of data meas end of file.@refill
+
+Treating ``binary files'' which contains @kbd{Ctrl-Z} characters and for
+compatibility to UNIX file system, C I/O library on MS-DOS has following
+two translation mode which control these characters.@refill
+
+@itemize @bullet
+@item
+Text mode translation
+@item
+Binary mode translation
+@end itemize
+
+With @b{text mode translation}, on reading, @key{CR}/@key{LF} code are
+translated to @key{CR} and reading is terminated as soon as @kbd{Ctrl-Z}
+appears. On writing, @key{LF} is added to @key{CR} and @kbd{Ctrl-Z} is
+added to end of file.@refill
+
+With @b{binary mode translation}, no code is translated.
+
+Demacs supports these two translation mode, and manage them on each
+buffer. You can find current translation mode of the buffer from file
+type mnemonic on the mode line.@refill
+
+@example
+--**-Emacs: demacs.tex   (T:Texinfo)--42%---------------
+                          ^
+@end example
+
+File type mnemonic means
+
+@table @code
+@item T
+Text mode translation.
+@item B
+Binary mode translation.
+@end table
+
+We call this translation mode which is managed on each buffer ``@b{file
+type}''.@refill
+
+
+@node BufferManagement, BufferFileType, TranslateMode, FileType
+@subsection Demacs Buffer Management
+
+@menu
+* BufferFileType::  File Type of Each Buffer.
+* BufferCreation::  Buffer Creation.
+@end menu
+
+
+@node BufferFileType, BufferCreation, BufferManagement, BufferManagement
+@subsubsection File Type of Each Buffer
+
+File type of each buffer is stored on buffer-local @code{file-type}
+variable. To set the value of @code{file-type} use the
+@code{set-file-type} function.@refill
+
+The default value of @code{file-type} is the value of
+@code{default-file-type} variable. To set its value, use the
+@code{set-default-file-type} function.@refill
+
+@defvr {Local Variable} file-type
+@table @kbd
+@item 0
+Text mode translation.
+@item 1
+Binary mode translation.
+@end table
+@end defvr
+
+@deffn Command set-file-type TYPE &optional BUFFER
+This function sets buffer-local @code{file-type} variable of
+@var{BUFFER} to @var{TYPE}. The argument @var{BUFFER} defaults to the
+current buffer. The value of @var{TYPE} is one of followings.@refill
+@table @asis
+@item @kbd{0} or @kbd{'text} or @kbd{"text"}
+Specify the buffer's file type to text mode.
+@item @kbd{1} or @kbd{'binary} or @kbd{"binary"}
+Specify the buffer's file type to binary mode.
+@end table
+@end deffn
+
+@defvr {Global Variable} default-file-type
+The value of this grobal bariable is the default value of buffer-local
+@code{file-type} variable.@refill
+@end defvr
+
+@deffn Command set-default-file-type TYPE
+This function sets the value of @code{default-file-type} variable to
+@var{TYPE}. The value of @var{TYPE} is one of followings.@refill
+@table @asis
+@item @kbd{0} or @kbd{'text} or @kbd{"text"}
+Specify the buffer's file type to text mode, by default.
+@item @kbd{1} or @kbd{'binary} or @kbd{"binary"}
+Specify the buffer's file type to binary mode, by default.
+@end table
+@end deffn
+
+
+@node BufferCreation, ReadingFiles, BufferFileType, BufferManagement
+@subsubsection Buffer Creation
+
+When creating a new buffer, Demacs set the buffer's local variable
+@code{file-type} to the value of the @code{default-file-type}
+variable.@refill
+
+
+@node ReadingFiles, FileInsertion, BufferCreation, FileType
+@subsection Reading Files into Demacs Buffers
+
+Using the @code{define-file-name-file-type} function, you can define
+file type associated with file name.@refill
+
+For example, 
+
+@example
+(define-file-name-file-type "\\.mem$" 'binary)
+@end example
+
+@noindent
+defines that file type of files having extention @file{.mem} is binary.@refill
+
+By default, the files ending with @file{.elc}, @file{.obj}, @file{.exe},
+@file{.com}, @file{.lib}, @file{.sys} (except @file{config.sys}),
+@file{.chk}, @file{.o}, @file{.a} and @file{.out} are defined as binary
+file type. This is defined in @file{demacs.el}.@refill
+
+@defun define-file-name-file-type FILENAME TYPE
+This function defines file type associate with file name. 
+@var{FILENAME} is regular expression or @code{nil}. @code{nil}
+matches any file anme. @var{TYPE} is file type.@refill
+@end defun
+
+@defun find-file-type-from-file-name FILENAME
+This function returns file type which associate with @var{FILENAME}
+defined by @code{define-file-name-file-type} function. If no file type is
+defined, this returns a value of @code{default-file-type}.@refill
+@end defun
+
+@menu
+* FileInsertion::  Inserting Files into Buffers.
+* FileReadingIn::  Visiting Files and Reading.
+* FileCreation::   Creating Files and Visiting.
+@end menu
+
+
+@node FileInsertion, FileReadingIn, ReadingFiles, ReadingFiles 
+@subsubsection Inserting Files into Buffers
+
+When inserting a file already visiting buffer, Demacs calls the
+@code{find-file-type-from-file-name} function with @b{file name of
+target file} as its argument, and set return value to file type of the
+buffer.@refill
+
+
+@node FileReadingIn, FileCreation, FileInsertion, ReadingFiles
+@subsubsection Visiting Files and Reading
+
+When visiting a file and reading into a buffer, Demacs calls the
+@code{find-file-type-from-file-name} function with @b{file name of
+target file} as its argument, and set return value to file type of the
+buffer.@refill
+
+
+@node FileCreation, WritingFiles, FileReadingIn,ReadingFiles
+@subsubsection Creating Files and Visiting
+
+The @code{find-file-not-found-set-file-type} function is appended to
+the @code{find-file-not-found-hooks} variable. This means that
+@code{find-file-not-found-set-file-type} is called when the visiting
+file not exists.
+
+This function calls internally the @code{find-file-type-from-file-name}
+function with @b{target name} as its argument and set return value to
+file type of the buffer.@refill
+
+
+@node WritingFiles, ProcessI/O , FileCreation, FileType
+@subsection Writing Buffers into Files
+
+When writing a buffer into a file, Demacs set translation mode to
+file type of the buffer.@refill
+
+
+@node ProcessI/O, Pass8, WritingFiles, FileType
+@subsection Process I/O
+
+Demacs communicate with external process (child process) using temporary
+file. The @code{default-file-type} variable is used as file type of
+the buffer which displays result.@refill
+
+
+@node Pass8, int86, ProcessI/O, Features
+@section ``8bit clean'' Display Mode
+
+Demacs supports so called ``8bit clean'' display mode, which displays
+8bit dirty characters as it is instead of backslashed or arrowed
+form.@refill
+
+If you want use this mode, execute command @code{toggle-pass8-mode}. You
+can find in mode line whether the buffer is in ``8bit clean'' display
+mode.@refill
+
+@example
+--**-Emacs: foo.bar      (T:Fundamental Pass8)--28%---------------
+                                        ^^^^^
+@end example
+
+@noindent
+To return ordinary display mode, again execute command
+@code{toggle-pass8-mode}.@refill
+
+If you want create a buffer always in ``8bit clean'' display mode, place
+
+@example
+(setq-default pass8-mode t)
+@end example
+
+@noindent
+in your startup file.
+
+@defvr {Local Variable} pass8-mode
+If this variable is @code{*Non-nil}, Demacs displays 8bit dirty
+characters as it is. Default value is @code{nil}.@refill
+@end defvr
+
+@deffn Command toggle-pass8-mode
+Set/Unset the buffer local variable @code{pass8-mode}.
+@end deffn
+
+
+@node int86, MachineType, Pass8, Features
+@section 8086 Software Interrupt
+
+Function @code{int86} generate 8086 software interrupt. DOS Extender
+@code{demacs.exe} not handle all interrupts, so some interrupts are
+treated as exception and may cause violation. Use this carefully.@refill
+
+Use this function like this.
+
+@example
+int
+GetDisk ()
+@{
+  union REGS regs;
+  regs.h.ah = 0x19;     /* 25 */
+  int86 (0x21 /* 33 */, &regs, &regs);
+  return regs.h.al;
+@}
+@end example
+
+C funtion to get current disk number may write in Demacs as follows:
+
+@example
+(defun get-disk ()
+  (let ((regs (make-register)))
+    (set-register-value regs 'ah 25)    ; 0x19
+    (int86 33 regs)                     ; 0x21
+    (register-value regs 'al)))
+@end example
+
+@defun make-register
+Generate instance of register type which is passwd to @code{int86}
+function.@refill
+@end defun
+
+@defun register-value REGISTER NAME
+Get the value of @var{REGISTER}'s @var{NAME}. @var{NAME} is one of
+followings.@refill
+
+@table @kbd
+@item 'ax
+@code{ax} register
+@item 'bx
+@code{bx} register
+@item 'cx
+@code{cx} register
+@item 'dx
+@code{dx} register
+@item 'si
+@code{si} register
+@item 'di
+@code{di} register
+@item 'cflag
+carry flag
+@item 'flags
+flag register
+@end table
+
+@noindent
+or
+
+@table @kbd
+@item 'al
+lower byte of @code{ax} register
+@item 'ah
+upper byte of @code{ax} register
+@item 'bl
+lower byte of @code{bx} register
+@item 'bh
+upper byte of @code{bx} register
+@item 'cl
+lower byte of @code{cx} register
+@item 'ch
+upper byte of @code{cx} register
+@item 'dl
+lower byte of @code{dx} register
+@item 'dh
+upper byte of @code{dx} register
+@end table
+@end defun
+
+@defun set-register-value REGISTER NAME VALUE
+Set @var{REGISTER}'s @var{NAME} to @var{VALUE}. @var{VALUE} is
+@b{unsigned integer}.@refill
+@end defun
+
+@defun int86 INTNO REGISTER
+Generate 8086 software interrupt of number @var{INTNO} with
+@var{REGISTER}. This returns set of register value.@refill
+@end defun
+
+
+@node MachineType, ibmpc, int86, Features
+@section Machine Specified Features
+	
+New lisp variable @code{dos-machine-type} is introduced for support
+various machines.@refill
+
+@defvr {Global Variable} dos-machine-type
+Set one of @code{ibmpc}, @code{j3100}, @code{pc98} to select machine
+specific code.@refill
+@end defvr
+
+@menu
+* ibmpc::  IBM PC.
+* j3100::  Toshiba J-3100.
+* pc98::   NEC PC-9801, EPSON PC-386.
+@end menu
+
+
+@node ibmpc, j3100, MachineType, MachineType
+@subsection IBM PC
+
+If you use IBM PC, evaluate @code{(setq dos-machine-type 'ibmpc)}, then
+@kbd{Ctrl-@key{SPACE}} will generate null code and @code{meta-flag} will
+works.@refill
+
+
+@node j3100, pc98, ibmpc, MachineType
+@subsection Toshiba J-3100
+
+If you have J-3100, evaluate @code{(setq dos-machine-type 'j3100)}, then 
+following functions will be abailable in addition to IBM PC features.
+
+@example
+set-cursor-mode
+get-screen-mode
+set-cursor-mode
+set-keyclick
+set-screen-mode
+@end example
+
+@noindent
+See @file{lisp/dos-fns.el} for more information.
+
+
+@node pc98, OtherFeatures, j3100, Features
+@subsection NEC PC-9801, EPSON PC-386
+
+If you have PC-9801 or EPSON PC-386, evaluate @code{(setq
+dos-machine-type 'pc98)}, then following functions will be abailable.
+
+@example
+pc98-assign-special-key
+pc98-cancel-special-key
+@end example
+
+@noindent
+See @file{src/dosfns.c} for more information.
+
+
+@node OtherFeatures, Restrictions, pc98, Features
+@section Other Demacs Features
+
+@enumerate
+@item
+Filename Completion
+
+Demacs provides filename completion feature. Filename may include drive
+name in its front. For example, we assume the current directory is
+@file{c:/tools/emacs} and there is a file @file{d:/config.sys}, under
+this condition @w{@kbd{C-x C-f}} invokes @code{find-file} function then
+the function prompts like@refill
+
+@example
+Find file: c:/tools/emacs/
+@end example
+
+@noindent
+at this point your typing of @code{d:/confi} and @key{TAB} key causes:@refill
+
+@example
+a:/tools/emacs/d:confi^I  -> d:/config.sys [sole complete]
+@end example
+
+@item 
+Child Process
+
+Function @code{suspend-emacs} calls sub shell. Try @kbd{C-z} and a new
+command shell is invoked.
+
+Function @code{call-process} calls sub shell like @code{suspend-emacs}
+but its stdout is redirected to a temporary file and it will be
+displayed after completion of the process. Try @kbd{M-!}. But don't call
+programs which require input from keyboard, because Demacs can't
+response to them.@refill
+
+
+@item
+Enhanced Dired
+
+This package includes enhanced dired-mode by Sebastian Kremer and their
+dos ported codes which works without UNIX compatible @file{ls.exe}.
+
+To use this, extract @file{edired.lzh} to your lisp directory and put
+lines
+
+@example
+(setq dired-mode-map nil)
+(load "emacs-19")
+(autoload 'dired "dired" nil t)
+@end example
+
+to your startup file (@file{direddos.elc} is loaded from @file{dired.elc}). 
+
+If you have @file{ls.exe}, append
+
+@example
+(setq dired-load-hook
+      '(lambda ()
+         (setq dired-ls-program "ls")))
+@end example
+
+to your startup file. If you use Demacs with @code{-keep} option, this
+configration works faster than former one.@refill
+
+You can get more infomation from @file{dired.README} and its document
+string.
+@end enumerate
+
+
+@node Restrictions, Compilation, OtherFeatures, Top
+@chapter Restrictions
+
+@itemize @bullet
+@item
+Demacs does not support asyncronous process. Therefore you can not use
+standard @file{compile.el}, @file{shell-mode.el} and etc. I think it's
+too painful, so, customized @file{compiled.el} and @file{dired.el} are
+provided. See lisp directory.
+
+@item
+@kbd{Ctrl-G} can't generate inturrupt signal. So you can't quit lisp-form
+like this:
+
+@example
+(while t ())
+@end example
+
+@noindent
+You shoud use the following form instead of it.
+
+@example
+(while (not (input-pending-p)) ())
+@end example
+
+@item
+Demacs backup filename convension is following.
+
+Base backup filename is made from following rule.
+
+@example
+foo      ->  foo.~
+foo.c    ->  foo.c~
+foo.tex  ->  foo.te~
+@end example
+
+Since DOS filename rule (8.3) is too tight, numeric backup such like
+@file{foo.c.~2~} can not be used.
+
+Similarly auto save filename is made from following rule.
+
+@example
+abcdefgh ->  #abcdefg.#
+foo.c    ->  #foo.c#
+foo.tex  ->  #foo.te#
+@end example
+
+Similarly, auto-save file name is created.
+
+@item
+If you don't configure XMS or VCPI driver and invoke Demacs with
+@code{-keep} option, child process Demacs (or go32 application) will
+@t{*}not@t{*} work correctly.@refill
+
+@item
+If you use VCPI manager and you have less extended memory than 300KB,
+Demacs will hang up or being to work @t{*}VERY@t{*} slowly. Plese give
+Demacs much memory if you met this.@refill
+@end itemize
+
+
+@node Compilation, Appendix, Restrictions, Top
+@chapter Compilation
+
+If you wish to recompile Demacs, 'GJ's GCC/G++' (GNU C compiler for DOS)
+and original Emacs source are required.@refill
+
+Diffs to the original Emacs source files are included in
+@file{src\diffs.lzh}. Unpack the archive. The files in @file{diffs.lzh}
+are not @code{diff} form but they are full source files, so you need not to
+apply patch.  You may need to alter makefile.@refill
+
+Then run @samp{make -f xmakefile all} command. Make generates
+@code{temacs} and @code{demacs}.  Caution! just @code{make} will destroy
+@file{xmakefile}. I prepared @file{xmake.bak} for you.@refill
+
+Note that all modifications are embeded by @code{#ifdef MSDOS} and
+@code{#endif MSDOS}, so you may follow my modifications easily. Machine
+specified codes are embedded in similar flags.
+
+@example
+    *.h *.c (C source files)
+       |
+ ------| make
+ |     | 
+ |     V
+ |   temacs (plain demacs) and lisp/*.el (lisp source files)
+ |     | 
+ |     | go32 temacs -batch -l loadup.el dump
+ |---->|
+       V
+     xemacs
+@end example
+
+Provided @file{bin/temacs} enables you to reconfigure demacs without
+recompilation. After editing lisp sources which are loaded up by
+@file{loadup.el}, run @samp{go32 temacs -batch -l loadup.el dump}.
+
+
+@node Appendix, TerminalFeatures, Compilation, Top
+
+@menu
+* TerminalFeatures::  Terminal Specified Features.
+* DiffsFromUNIX::     Differences from UNIX Version.
+* Index::             Index: Functions and Variables.
+@end menu
+
+
+@node TerminalFeatures, DiffsFromUNIX, Appendix, Appendix
+@appendix Terminal Specified Features
+
+If your machine is IBM PC or its compatibles, set environment variable
+@var{TERM} with @code{ibmpc}, then you can use cursor keys and functon
+keys.
+
+The functions which is assigned to those keys are as follows:
+
+@ifinfo
+@display
+Key        Function
+----------+--------------------+-----------------
+PgUp       scroll-up            Scroll text upward by page        
+PgDn       scroll-down          Scroll text downward by page      
+Insert     set-mark-command     Set mark current cursor position  
+Del        delete-backward-char Delete previous character         
+UpArrow    previous-line        Move cursor vertically up         
+LeftArrow  backward-char        Move cursor left                  
+RightArrow forward-char         Move cursor right                 
+DownArrow  next-line            Move cursor vertically down       
+Home       beginning-of-buffer  Move cursor beginning of buffer   
+End        end-of-buffer        Move cursor end of buffer         
+@end display
+@end ifinfo
+
+@tex
+\vskip \baselineskip
+\indent
+\halign{\tt #\hfil&\qquad#&\tt #\hfil&\qquad#&\rm #\hfil\cr
+PgUp       &&scroll-up            &&Scroll text upward by page\cr
+PgDn       &&scroll-down          &&Scroll text downward by page\cr
+Insert     &&set-mark-command     &&Set mark current cursor position\cr
+Del        &&delete-backward      &&Delete previous character\cr
+UpArrow    &&previous-line        &&Move cursor vertically up\cr
+LeftArrow  &&backward-char        &&Move cursor left\cr
+RightArrow &&forward-char         &&Move cursor right\cr
+DownArrow  &&next-line            &&Move cursor vertically down\cr
+Home       &&beginning-of-buffer  &&Move cursor beginning of buffer\cr
+End        &&end-of-buffer        &&Move cursor end of buffer\cr
+}
+@end tex
+
+@ifinfo
+@display
+F1         help-for-help        Show help for help
+Shift-F1   describe-mode        Show help of current mode
+Ctrl-F1    describe-key         Show help of key
+
+F2         other-window         Select different window
+Shift-F2   switch-to-buffer     Select buffer by name
+Ctrl-F2    list-buffers         Display a list of buffers
+
+F3         delete-other-windows Make current window fill the screen
+Shift-F3   delete-window        Remove current window
+Ctrl-F3    scroll-other-window  Scroll text of other window upward by page
+
+F4         split-window-vertically      Split current window vertically
+Shift-F4   enlarge-window               Make current window bigger
+Ctrl-F4    shrink-window                Make current window smaller
+
+F5         split-window-horizontally    Split current window horizontally
+Shift-F5   enlarge-window-horizontally  Make current window wider
+Ctrl-F5    shrink-window-horizontally   Make current window narrower
+
+F6         copy-region          Copy from mark till cursor to yank-buffer
+Shift-F6   kill-region          Cut from mark till cursor to yank-buffer
+Ctrl-F6    yank                 Paste yank-buffer to current cursor position
+
+F7         goto-line            Goto line
+Shift-F7   isearch-forward      Do incremental search forward
+Ctrl-F7    query-replace        Do query replace
+
+F8         find-file            Edit file
+Shift-F8   save-buffer          Save current buffer
+Ctrl-F8    write-file           Write current buffer into file
+
+F9         dired                        'Edit' directory
+Shift-F9   compile                      Compile the program
+Ctrl-F9    repeat-complex-command       Edit and re-evaluate last command
+
+F10        shell-command                Execute command
+Shift-F10  suspend-emacs                Call DOS command interpreter
+Ctrl-F10   save-buffers-kill-emacs      Quit Emacs
+@end display
+@end ifinfo
+
+@tex
+\vskip \baselineskip
+\indent
+\halign{\tt #\hfil&\quad#&\tt #\hfil&\quad#&\rm #\hfil\cr
+F1	   &&help-for-help		&&Show help for help\cr
+Shift-F1   &&describe-mode		&&Show help of current mode\cr
+Ctrl-F1	   &&describe-key		&&Show help of key\cr
+\cr
+F2	   &&other-window		&&Select different window\cr
+Shift-F2   &&switch-to-buffer		&&Select buffer by name\cr
+Ctrl-F2	   &&list-buffers		&&Display a list of buffers\cr
+\cr
+F3	   &&delete-other-windows	&&Make current window fill the screen\cr
+Shift-F3   &&delete-window		&&Remove current window\cr
+Ctrl-F3	   &&scroll-other-window	&&Scroll text of other window upward by page\cr
+\cr
+F4	   &&split-window-vertically	&&Split current window vertically\cr
+Shift-F4   &&enlarge-window		&&Make current window bigger\cr
+Ctrl-F4	   &&shrink-window		&&Make current window smaller\cr
+\cr
+F5	   &&split-window-horizontally	&&Split current window horizontally\cr
+Shift-F5   &&enlarge-window-horizontally&&Make current window wider\cr
+Ctrl-F5	   &&shrink-window-horizontally	&&Make current window narrower\cr
+\cr
+F6	   &&copy-region	&&Copy from mark till cursor to yank-buffer\cr
+Shift-F6   &&kill-region	&&Cut from mark till cursor to yank-buffer\cr
+Ctrl-F6	   &&yank		&&Paste yank-buffer to current cursor position\cr
+\cr
+F7	   &&goto-line		&&Goto line\cr
+Shift-F7   &&isearch-forward	&&Do incremental search forward\cr
+Ctrl-F7	   &&query-replace	&&Do query replace\cr
+\cr
+F8	   &&find-file		&&Edit file\cr
+Shift-F8   &&save-buffer	&&Save current buffer\cr
+Ctrl-F8	   &&write-file		&&Write current buffer into file\cr
+\cr
+F9	   &&dired			&&'Edit' directory\cr
+Shift-F9   &&compile			&&Compile the program\cr
+Ctrl-F9	   &&repeat-complex-command	&&Edit and re-evaluate last command\cr
+\cr
+F10	   &&shell-command		&&Execute command\cr
+Shift-F10  &&suspend-emacs		&&Call DOS command interpreter\cr
+Ctrl-F10   &&save-buffers-kill-emacs	&&Quit Emacs\cr
+}
+\vskip \baselineskip
+@end tex
+
+@noindent
+Summary:
+
+@ifinfo
+ | F.1 |  F.2  |  F.3  |  F.4   |  F.5   | F.6 |  F.7  | F.8  | F.9  | F.10   |
+ |help | nextW | delOW |splitWH |splitWV |copy | goto  | read |dired |command |
+s|mode |switchW| delW  |largeWH |largeWV |kill |search | save | make |suspend |
+c|key  |buffers|scrlOW |shrnkWH |shrnkWV |yank |replace|write |repeat| quit   |
+@end ifinfo
+
+@tex
+\vskip \baselineskip
+\indent
+\vbox{\offinterlineskip
+\halign{
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil&
+\vrule#&
+\hfil\ \tt #\hfil\cr
+ &&  F.1  &&  F.2  &&  F.3  &&  F.4  &&  F.5  &&  F.6  && F.7 &&  F.8  && F.9 && F.10   \cr
+\omit&height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit\cr
+\noalign{\hrule}
+\omit&height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit\cr
+  && help  &&  nextW  &&  delOW  && splitWH  && splitWV  && copy  &&  goto   &&  read  && dired  && command  \cr
+s && mode  && switchW &&  delW   && largeWH  && largeWV  && kill  && search  &&  save  &&  make  && suspend  \cr
+c && key   && buffers && scrlOW  && shrnkWH  && shrnkWV  && yank  && replace && write  && repeat &&  quit    \cr
+}}
+\vskip \baselineskip
+@end tex
+
+
+If you want to append and/or change the function, use lisp variable
+@code{term-setup-hook}. See @file{lisp/term/ibmpc.el}.@refill
+
+If you don't need cursor and function keys, append next line to
+@file{$@var{HOME}/_emacs}:@refill
+
+@example
+(setq term-file-prefix nil)
+@end example
+
+
+@node DiffsFromUNIX, OmittedFunctions, TerminalFeatures, Appendix
+@appendix Differences from UNIX Version
+
+@menu
+* OmittedFunctions:: Not implemented Functions to Demacs.
+* OmittedVariables:: Not implemented Variables to Demacs.
+* AddedFunctions::   Added Functions to Demacs.
+* AddedVariables::   Added Variables to Demacs.
+@end menu
+
+
+@node OmittedFunctions, OmittedVariables, DiffsFromUNIX, DiffsFromUNIX
+@unnumberedsec List of Functions which are not inplemented to Demacs
+
+@example
+accept-process-output                   process-list
+continue-process                        process-mark
+delete-process                          process-name
+file-locked-p                           process-send-eof
+get-buffer-process                      process-send-region
+get-process                             process-send-string
+interrupt-process                       process-sentinel
+kill-process                            process-status
+list-processes                          processp
+make-symbolic-link                      quit-process
+open-network-stream                     set-process-buffer
+process-buffer                          set-process-filter
+process-command                         set-process-kanji-code
+process-exit-status                     set-process-sentinel
+process-filter                          start-process
+process-id                              stop-process
+process-kanji-code                      waiting-for-user-input-p
+process-kill-without-query
+@end example
+
+
+@node OmittedVariables, AddedFunctions, OmittedFunctions, DiffsFromUNIX
+@unnumberedsec List of Variables which are not inplemented to Demacs
+
+@example
+delete-exited-processes                 process-connection-type
+@end example
+
+
+@node AddedFunctions, AddedVariables, OmittedVariables, DiffsFromUNIX
+@unnumberedsec List of Functions added to Demacs
+
+@example
+bdos                                    intdos
+define-file-name-file-type              invoke-find-file-type
+demacs-version                          make-register
+disk-free-space                         register-value
+disk-total-space                        set-cursor-mode
+file-type-internal                      set-default-file-type
+file-type-p                             set-file-type
+find-file-not-found-set-file-type       set-keyclick
+find-file-type-from-file-name           set-register-value
+get-cursor-mode                         set-screen-mode
+get-screen-mode                         toggle-pass8-mode
+int86
+@end example
+
+
+@node AddedVariables, Index, AddedFunctions, DiffsFromUNIX
+@unnumberedsec List of Functions added to Demacs
+
+@example
+default-file-type                       file-type
+demacs-version                          file-type-alist
+demacs-version-date                     find-file-type
+dos-inhibit-setdisk                     pass8-mode
+dos-machine-type                        register-name-by-byte-alist
+file-name-file-type-alist               register-name-by-word-alist
+@end example
+
+
+@node Index, , AddedVariables, Appendix
+@appendix Index
+@unnumberedsec Functions
+@printindex fn
+@unnumberedsec Variables
+@printindex vr
+
+@contents
+@bye

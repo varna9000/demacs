@@ -1,0 +1,102 @@
+INSTALLATION:
+------------
+
+	dired.el
+	emacs-19.el
+	dired-vms.el
+
+Put these files into your own lisp directory - or in the system
+.../emacs/lisp/local/ directory if you want to install it site-wide.
+Byte compile the files for speed.  (But under VMS 5.0, using a
+compiled dired may crash Emacs.  Try it.)
+
+If you don't have set up your own lisp directory or cannot install it
+in a system directory, the easiest thing is to put the files in a
+directory named "emacs" in your home directory and load them at
+startup by including the two lines
+
+    (load (expand-file-name "~/emacs/emacs-19"))
+    (load (expand-file-name "~/emacs/dired"))
+
+in your .emacs.  If dired is preloaded in your Emacs, you have to put
+the line
+
+    (setq dired-mode-map nil)
+
+_before_ the load statements, or the preloaded key bindings will not
+be overwritten.
+
+Old versions of dired used to consider all files starting with `#' as
+auto save file.  Now only real auto-save files are flagged.  You can
+go back to the old behaviour by including the following line into your
+~/.emacs:
+
+  (defun auto-save-file-name-p (str) (string= "#" (substring str 0 1)))
+
+CUSTOMIZATION:
+-------------
+
+dired.el is a drop-in replacement for standard dired.  It should work
+without any changes to your .emacs (but dired-mark users see below).
+
+If you want you can set some variables in your .emacs.  Here is what I do:
+
+    (setq dired-listing-switches "-alt"	; sort by date
+	  ;; next 3 if you have csh or bash, see doc on dired `!' cmd.
+	  dired-mark-prefix "{"
+	  dired-mark-postfix "}"
+	  dired-mark-separator ","
+	  ;; next 2 save minibuffer screen space:
+	  dired-background-prompt "& on %s: "
+	  dired-shell-prompt "! on %s: ")
+
+DIRED-MARK USERS:
+----------------
+
+This dired is based on dired.el for Emacs 19 (as sent to me by RMS to
+merge in my enhancements), but of course also works under 18.55 (and
+probably most earlier versions).  It incorporates the functionality of
+dired-mark.el, which I have previously posted in gnu.emacs.  If you
+are using that now, you should remove the dired-mark-startup function
+from your dired-mode-hook.  If you used the variable dired-use-more
+(which has now vanished), you can instead do
+
+    (fset 'view-file 'more-file)
+    (fset 'view-buffer 'more-buffer)
+
+in your .emacs to use more.el instead of view.el *everywhere* in Emacs
+(which is what I do).
+
+USAGE:
+-----
+
+For a start, do describe-mode (C-h m) in a dired buffer.  This
+mentions all the important commands.  Try the `i' command on a subdir
+line.  Try `l' on the subdir header line to relist the just inserted
+subdirectory.  Try `=' and `$' to toggle hiding.  Try `m' to mark some
+files and `c' to copy (or `r' to move) them into another directory.
+Run the shell command `ls -l' on the marked files using the `!' key.
+
+Look into the doc for the `!' command for more info on shell commands.
+
+Toggle sorting by name/date with `s'.  To sort on size set the
+switches to "-alS" using the dired `S' command.  (At least gnu ls has
+a -S switch to sort on size, other ls programs perhaps not.  I can
+give you lisp code to sort on size.)
+
+Dired buffers know about each other.  That is, copying from DIR1 into
+DIR2 will update DIR2's dired buffer(s).
+
+The `F' switch is now allowed in dired-listing-switches.  Filenames
+may have spaces (but no newlines or ^M's.)
+
+BUG REPORTS:
+-----------
+
+Email bug reports, comments and suggestions to me:
+
+     Sebastian Kremer <sk@thp.uni-koeln.de>
+
+I would especially like to hear your comments on key bindings,
+docstrings, missing features or creeping featurism, and consistency of
+user interface.

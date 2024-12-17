@@ -1,0 +1,116 @@
+
+(defvar pc98-map (make-keymap) "\
+The pc98-map maps the function keys on the PC9801 keyboard.")
+
+(define-key pc98-map "A" (quote help-for-help))
+
+(define-key pc98-map "P" (quote describe-mode))
+
+(define-key pc98-map "_" (quote describe-key))
+
+(define-key pc98-map "B" (quote other-window))
+
+(define-key pc98-map "Q" (quote switch-to-buffer))
+
+(define-key pc98-map "`" (quote list-buffers))
+
+(define-key pc98-map "C" (quote delete-other-windows))
+
+(define-key pc98-map "R" (quote delete-window))
+
+(define-key pc98-map "a" (quote scroll-other-window))
+
+(define-key pc98-map "D" (quote split-window-vertically))
+
+(define-key pc98-map "S" (quote enlarge-window))
+
+(define-key pc98-map "b" (quote shrink-window))
+
+(define-key pc98-map "E" (quote split-window-horizontally))
+
+(define-key pc98-map "T" (quote enlarge-window-horizontally))
+
+(define-key pc98-map "c" (quote shrink-window-horizontally))
+
+(define-key pc98-map "F" (quote copy-region-as-kill))
+
+(define-key pc98-map "U" (quote kill-region))
+
+(define-key pc98-map "d" (quote yank))
+
+(define-key pc98-map "G" (quote goto-line))
+
+(define-key pc98-map "V" (quote isearch-forward))
+
+(define-key pc98-map "e" (quote query-replace))
+
+(define-key pc98-map "H" (quote find-file))
+
+(define-key pc98-map "W" (quote save-buffer))
+
+(define-key pc98-map "f" (quote write-file))
+
+(define-key pc98-map "I" (quote dired))
+
+(define-key pc98-map "X" (quote compile))
+
+(define-key pc98-map "g" (quote repeat-complex-command))
+
+(define-key pc98-map "J" (quote shell-command))
+
+(define-key pc98-map "Y" (quote suspend-emacs))
+
+(define-key pc98-map "h" (quote save-buffers-kill-emacs))
+
+(define-key pc98-map "n" (quote scroll-up))
+
+(define-key pc98-map "o" (quote scroll-down))
+
+(define-key pc98-map "p" (quote set-mark-command))
+
+(define-key pc98-map "r" (quote previous-line))
+
+(define-key pc98-map "s" (quote backward-char))
+
+(define-key pc98-map "t" (quote forward-char))
+
+(define-key pc98-map "u" (quote next-line))
+
+(define-key pc98-map "v" (quote recenter))
+
+(define-key pc98-map "w" (quote help-for-help))
+
+(define-key pc98-map "x" (quote beginning-of-buffer))
+
+(define-key esc-map "O" pc98-map)
+
+(defvar pc98-map-hooks nil "\
+List of forms to evaluate after setting pc98-map.")
+
+(let ((hooks pc98-map-hooks)) (while hooks (eval (car hooks)) (setq hooks (cdr hooks))))
+
+(defvar console-is-with-function-key-label nil "\
+If value is t, the console consists of emacs windows and function key label.")
+
+(defun redraw-display-with-function-key-label nil (byte-code "À ˆÁ ‡" [redraw-display put-function-key-label] 3))
+
+(defun recenter-with-function-key-label (&optional arg) "\
+  recenter and display function key label." (interactive) (byte-code "ÁˆÂ!ˆÃ ‡" [arg nil recenter put-function-key-label] 3))
+
+(defun setup-console-with-function-key-label nil (byte-code "À ˆÁÂ!ˆÃÄ!ˆÅÆ!ˆÇ ˆÈÉ!‡" [delete-other-windows enlarge-window 100 shrink-window 4 message "" redraw-display-with-function-key-label send-string-to-terminal "[1;1f"] 7))
+
+(defun put-function-key-label nil (byte-code "ŠÁÂ!ˆÃÄÅÆÇ ÈZ\"ÈÉ#!)ˆÀ‡" [nil message "" send-string-to-terminal convert-string-kanji-code format "[%d;1f |  F.1  |  F.2  |  F.3  |  F.4  |  F.5  |  F.6  | F.7 |  F.8  | F.9 | F.10   |
+ |¥Ø¥ë¥× |Áë°ÜÆ° |Á´ÌÌ²½ |²£Ê¬³ä |½ÄÊ¬³ä |¥³¥Ô¡¼ |°ÜÆ° |¥ê¡¼¥É |DIR  |¥³¥Þ¥ó¥É|
+s|¥â¡¼¥É |Áë»ØÄê |ÁëÊÄº¿ |²£³ÈÂç |½Ä³ÈÂç |¥«¥Ã¥È |Ãµº÷ |¥»¡¼¥Ö |MAKE |¥·¥§¥ë  |
+c|¸°²òÀâ |Áë°ìÍ÷ |Â¾ÁëÆ° |²£½Ì¾® |½Ä½Ì¾® |¥ä¥ó¥¯ |ÃÖ´¹ |¥é¥¤¥È |·«ÊÖ |½ªÎ»    |
+" screen-height 3 1] 8))
+
+(defun erase-system-function-key-label nil "\
+Erase system function key label." (byte-code "ÀÁ!‡" [send-string-to-terminal "[>1h"] 2))
+
+(defun appear-system-function-key-label nil "\
+Appear system function key label." (byte-code "ÀÁ!‡" [send-string-to-terminal "[>1l"] 2))
+
+(if console-is-with-function-key-label (progn (global-set-key "" (quote recenter-with-function-key-label)) (setup-console-with-function-key-label)))
+
+(pc98-assign-special-key)

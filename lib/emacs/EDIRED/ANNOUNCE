@@ -1,0 +1,109 @@
+Path: icspub!astemgw!wnoc-tyo-news!ccut!sun-barr!ames!rex!samsung!zaphod.mps.ohio-state.edu!tut.cis.ohio-state.edu!thp.uni-koeln.de!sk
+From: sk@thp.uni-koeln.de (Sebastian Kremer)
+Newsgroups: gnu.emacs.sources
+Subject: Tree Dired available
+Message-ID: <9101281430.AA20012@sun0.thp.Uni-Koeln.DE>
+Date: 28 Jan 91 14:30:17 GMT
+Sender: daemon@tut.cis.ohio-state.edu
+Distribution: gnu
+Organization: Source only  Discussion and requests in gnu.emacs.help.
+Lines: 97
+
+Since Chris Ward <cward@mordor.dseg.ti.com> has just posted his
+enhanced Dired and Martin Maechler <maechler@breeze.bellcore.com> had
+enquired (in gnu.emacs.bug) about future Dired plans for the next
+Emacs release, I'd like to mention that I am currently beta-testing a
+new version of dired.  [I had posted a reply to Martin's article, but
+apperently it did not make it out.]
+
+I have already given copyright of this in writing to the FSF.
+Probably RMS will include it in the next Emacs release.
+
+Features are:
+
+    * Tree Dired (ls -lR allowed and insertion of subdirectories in
+      situ - just type `i' on a directory line to expand it into the
+      current buffer).
+
+      Commands to hide some or all subdirectories, leaving only their
+      header lines (like outline mode).
+
+      Moving commands to traverse the tree, to quickly go to the next
+      file that is a directory or to a specific file by name.
+
+    * marking of files for later commands (all dired commands work on
+      lists of marked files or the next prefix ARG files and default
+      to the current file, so this is fully backward compatible.)
+
+    * arbitrary shell commands on files, optionally in the background
+
+    * renaming by regexp (with \<n> and \& allowed like in replace-regexp)
+
+    * marking by regexp
+
+    * marking by file type (directory/symlink/executable) in addition
+      to the usual marking of backup or auto-save files
+
+    * diffing files
+
+    * sorting on name or date
+
+    * copy/move of single or marked files into a directory
+
+    * spaces in filenames allowed
+
+    * `F', `i' and `s' in dired-listing-switches allowed
+
+    * and many little enhancements/fixes.
+
+It also works much better with ange-ftp.  In fact, there is hardly any
+difference between local and remote directories in Dired now.
+[ange-ftp is an Emacs lisp package that makes Emacs work with remote
+files using ftp.  It uses a filename syntax like rcp:
+/user@host:/absolute/path or /user@host:relative/to/your/home/dir.
+A recent version of ange-ftp.el is included in dired-ange.shar.]
+
+I have been watching discussions about Dired in the Emacs-related
+newsgroups and think all features that were being discussed are
+present in my dired.  All bugs that were mentioned are fixed or have
+vanished due to the major rewrite.
+
+From quickly looking over Chris Ward's code I have the impression that
+his "multi commands" correspond to my "file marking".
+
+The major difference between this version of dired and others is that
+it is possible to have a whole directory tree (or part of it) in one
+Dired buffer.  You can either add `R' to your listing switches or
+include directories one by one by typing `i' on them as you go along.
+
+Unlike Monkey Mode, this is fully backward compatible to standard
+Dired: a naive Dired user should have no problems in using Tree Dired.
+
+Dired buffers know about each other, so that moving or copying files
+around updates all concerned Dired buffers (and file buffers if a
+visited file is renamed).
+
+A version of my dired is available for anonymous ftp from
+
+  ftp.cs.buffalo.edu:pub/Emacs/
+
+  	dired.shar		Required (100k)
+	dired-extra.shar	Optional extra features (20k)
+	dired-ange.shar		Optional ange-ftp support (70k)
+	dired-txt		discussions from the beta tester list (40k)
+	diredall.tar.Z		All of the above (90k)
+
+(It will take a week or so until the latest version (5.15) will be
+available in buffalo.  Currently version 4.53 is still there and the
+last two files are not yet available.)
+
+"Extra" Dired features include minibuffer history for dired shell
+commands (including my gmhist - generic minibuffer history - package,
+which I will re-post soon), VM or RMAIL on folder, and dynamic marker
+characters.  Release 5.15 also can selectively omit files (such as
+backup, object and other uninteresting files) from the listing.
+
+--
+Sebastian Kremer <sk@thp.Uni-Koeln.DE>
+Institute of Theoretical Physics, University of Cologne, F. R. of Germany
+

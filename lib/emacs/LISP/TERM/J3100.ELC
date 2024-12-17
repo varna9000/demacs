@@ -1,0 +1,104 @@
+
+(defun j3100-assign-special-key nil (byte-code "¿¡!à¿¬!à¿√!à¿ƒ!à¿≈!à¿∆!à¿«!à¿»!à¿…!à¿ !à¿À!à¿Ã!à¿Õ!à¿Œ!à¿œ!à¿–!à¿—!à¿“!à¿”!à¿‘!à¿’!à¿÷!à¿◊!à¿ÿ!à¿Ÿ!à¿⁄!à¿€!à¿‹!à¿›!à¿ﬁ!à¿ﬂ!à¿‡!à¿·!à¿‚!à¿„!à¿‰!à¿Â!à¿Ê!à¿Á!à¿Ë!á" [send-string-to-terminal "[0;59;\"O;\"p" "[0;60;\"O<\"p" "[0;61;\"O=\"p" "[0;62;\"O>\"p" "[0;63;\"O?\"p" "[0;64;\"O@\"p" "[0;65;\"OA\"p" "[0;66;\"OB\"p" "[0;67;\"OC\"p" "[0;68;\"OD\"p" "[0;71;\"<\"p" "[0;72;\"\"p" "[0;73;\"v\"p" "[0;75;\"\"p" "[0;77;\"\"p" "[0;79;\">\"p" "[0;80;\"\"p" "[0;81;\"\"p" "[0;82;\"OR\"p" "[0;83;\"\"p" "[0;84;\"OT\"p" "[0;85;\"OU\"p" "[0;86;\"OV\"p" "[0;87;\"OW\"p" "[0;88;\"OX\"p" "[0;89;\"OY\"p" "[0;90;\"OZ\"p" "[0;91;\"O[\"p" "[0;92;\"O\\\"p" "[0;93;\"O]\"p" "[0;94;\"O^\"p" "[0;95;\"O_\"p" "[0;96;\"O`\"p" "[0;97;\"Oa\"p" "[0;98;\"Ob\"p" "[0;99;\"Oc\"p" "[0;100;\"Od\"p" "[0;101;\"Oe\"p" "[0;102;\"Of\"p" "[0;103;\"Og\"p"] 41))
+
+(defun j3100-cancel-special-key nil (byte-code "¿¡!à¿¬!à¿√!à¿ƒ!à¿≈!à¿∆!à¿«!à¿»!à¿…!à¿ !à¿À!à¿Ã!à¿Õ!à¿Œ!à¿œ!à¿–!à¿—!à¿“!à¿”!à¿‘!à¿’!à¿÷!à¿◊!à¿ÿ!à¿Ÿ!à¿⁄!à¿€!à¿‹!à¿›!à¿ﬁ!à¿ﬂ!à¿‡!à¿·!à¿‚!à¿„!à¿‰!à¿Â!à¿Ê!à¿Á!à¿Ë!á" [send-string-to-terminal "[0;59;0;59p" "[0;60;0;60p" "[0;61;0;61p" "[0;62;0;62p" "[0;63;0;63p" "[0;64;0;64p" "[0;65;0;65p" "[0;66;0;66p" "[0;67;0;67p" "[0;68;0;68p" "[0;71;0;71p" "[0;72;0;72p" "[0;73;0;73p" "[0;75;0;75p" "[0;77;0;77p" "[0;79;0;79p" "[0;80;0;80p" "[0;81;0;81p" "[0;82;0;82p" "[0;83;0;83p" "[0;84;0;84p" "[0;85;0;85p" "[0;86;0;86p" "[0;87;0;87p" "[0;88;0;88p" "[0;89;0;89p" "[0;90;0;90p" "[0;91;0;91p" "[0;92;0;92p" "[0;93;0;93p" "[0;94;0;94p" "[0;95;0;95p" "[0;96;0;96p" "[0;97;0;97p" "[0;98;0;98p" "[0;99;0;99p" "[0;100;0;100p" "[0;101;0;101p" "[0;102;0;102p" "[0;103;0;103p"] 41))
+
+(defvar j3100-map (make-keymap) "\
+The j3100-map maps the function keys on the TOSHIBA J-3100 keyboard.")
+
+(define-key j3100-map ";" (quote help-for-help))
+
+(define-key j3100-map "T" (quote describe-mode))
+
+(define-key j3100-map "^" (quote describe-key))
+
+(define-key j3100-map "<" (quote other-window))
+
+(define-key j3100-map "U" (quote switch-to-buffer))
+
+(define-key j3100-map "_" (quote list-buffers))
+
+(define-key j3100-map "=" (quote delete-other-windows))
+
+(define-key j3100-map "V" (quote delete-window))
+
+(define-key j3100-map "`" (quote scroll-other-window))
+
+(define-key j3100-map ">" (quote split-window-vertically))
+
+(define-key j3100-map "W" (quote enlarge-window))
+
+(define-key j3100-map "a" (quote shrink-window))
+
+(define-key j3100-map "?" (quote split-window-horizontally))
+
+(define-key j3100-map "X" (quote enlarge-window-horizontally))
+
+(define-key j3100-map "b" (quote shrink-window-horizontally))
+
+(define-key j3100-map "@" (quote copy-region-as-kill))
+
+(define-key j3100-map "Y" (quote kill-region))
+
+(define-key j3100-map "c" (quote yank))
+
+(define-key j3100-map "A" (quote goto-line))
+
+(define-key j3100-map "Z" (quote isearch-forward))
+
+(define-key j3100-map "d" (quote query-replace))
+
+(define-key j3100-map "B" (quote find-file))
+
+(define-key j3100-map "[" (quote save-buffer))
+
+(define-key j3100-map "e" (quote write-file))
+
+(define-key j3100-map "C" (quote dired))
+
+(define-key j3100-map "\\" (quote compile))
+
+(define-key j3100-map "f" (quote repeat-complex-command))
+
+(define-key j3100-map "D" (quote shell-command))
+
+(define-key j3100-map "]" (quote suspend-emacs))
+
+(define-key j3100-map "g" (quote save-buffers-kill-emacs))
+
+(define-key j3100-map "R" (quote set-mark-command))
+
+(define-key esc-map "O" j3100-map)
+
+(defvar j3100-map-hooks nil "\
+List of forms to evaluate after setting j3100-map.")
+
+(let ((hooks j3100-map-hooks)) (while hooks (eval (car hooks)) (setq hooks (cdr hooks))))
+
+(defvar console-is-with-function-key-label nil "\
+If value is t, the console consists of emacs windows and function key label.")
+
+(defun redraw-display-with-function-key-label nil (byte-code "¿ à¡ á" [redraw-display put-function-key-label] 3))
+
+(defun recenter-with-function-key-label (&optional arg) "\
+  recenter and display function key label." (interactive) (byte-code "¡à¬!à√ á" [arg nil recenter put-function-key-label] 3))
+
+(defun setup-console-with-function-key-label nil (byte-code "¿ à¡¬!à√ƒ!à≈∆!à« à»…!á" [delete-other-windows enlarge-window 100 shrink-window 4 message "" redraw-display-with-function-key-label send-string-to-terminal "[1;1f"] 7))
+
+(defun put-function-key-label nil (byte-code "ä¡¬!à√ƒ≈∆« »Z\"»…#!)à¿á" [nil message "" send-string-to-terminal convert-string-kanji-code format "[%d;1f |  F.1  |  F.2  |  F.3  |  F.4  |  F.5  |  F.6  | F.7 |  F.8  | F.9 | F.10   |
+ |•ÿ•Î•◊ |¡Î∞‹∆∞ |¡¥ÃÃ≤Ω |≤£ ¨≥‰ |Ωƒ ¨≥‰ |•≥•‘°º |∞‹∆∞ |•Í°º•… |DIR  |•≥•ﬁ•Û•…|
+s|•‚°º•… |¡ÎªÿƒÍ |¡Î ƒ∫ø |≤£≥»¬Á |Ωƒ≥»¬Á |•´•√•» |√µ∫˜ |•ª°º•÷ |MAKE |•∑•ß•Î  |
+c|∏∞≤Ú¿‚ |¡Î∞ÏÕ˜ |¬æ¡Î∆∞ |≤£ΩÃæÆ |ΩƒΩÃæÆ |•‰•Û•Ø |√÷¥π |•È•§•» |∑´ ÷ |Ω™Œª    |
+" screen-height 3 1] 8))
+
+(defun erase-system-function-key-label nil "\
+Erase system function key label." (byte-code "¿á" [t] 1))
+
+(defun appear-system-function-key-label nil "\
+Appear system function key label." (byte-code "¿á" [t] 1))
+
+(if console-is-with-function-key-label (progn (global-set-key "" (quote recenter-with-function-key-label)) (setup-console-with-function-key-label)))
+
+(j3100-assign-special-key)
+
+(setq meta-flag t)

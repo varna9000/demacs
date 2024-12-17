@@ -1,0 +1,161 @@
+;;; sample startup file
+;;; semi-colon(s), beginning of line means that the line is commented out.
+
+;; load path
+;(setq load-path (append (list (expand-file-name "~/emacs/lisp") 
+;                              "a:/emacs/lisp/enhanced")
+;                        load-path))
+
+;;
+;; UNCOMMENT ONE OF THEM
+;;
+;;; if your machine is IBM PC or it's compatible
+;(setq dos-machine-type 'ibmpc)
+;;; if your machine is Toshiba J-3100
+;(setq dos-machine-type 'j3100)
+;;; if your machine is NEC PC-9801 or EPSON PC-386 series
+;(setq dos-machine-type 'pc98)
+
+;(load-library "term/bobcat") ; swap BS (C-h) and DEL
+
+;;
+;; PC9801 initialization
+;;  function keys, cursor keys
+;;  If you need META key, use hkey.exe (hkey is distributed within hterm2.6.0)
+;;
+(if (eq dos-machine-type 'pc98)
+    (progn
+      (send-string-to-terminal "\e[>1h")     ;; erase function key label
+      (setq kill-emacs-hook                  ;; recover functin key label
+	    '(lambda ()
+	       (send-string-to-terminal "\e[>1l")
+	       (pc98-cancel-special-key)))
+      (setq suspend-hook
+	    '(lambda ()
+	       (send-string-to-terminal "\e[>1l")
+	       (pc98-cancel-special-key)))
+      (setq suspend-resume-hook
+	    '(lambda ()
+	       (send-string-to-terminal "\e[>1h")
+	       (pc98-assign-special-key)
+	       (if console-is-with-function-key-label
+		   (redraw-display-with-function-key-label))))
+      ; uncomment if you wish to display function key label
+      ; (setq console-is-with-function-key-label t)
+      ; uncomment if your $TERM is not pc98 and you want function key
+      ; (load "term/pc98")
+      ))
+
+;;
+;; J-3100 initialization
+;;   function keys, cursor keys, meta key (by ALT)
+;;   cursor shape, key click
+;;
+(if (eq dos-machine-type 'j3100)
+    (progn
+      (setq startup-screen-mode (get-screen-mode))
+      (setq startup-cursor-mode (get-cursor-mode))
+      (set-cursor-mode 0 15 nil)
+      (set-keyclick t)
+      (setq kill-emacs-hook
+	    '(lambda ()
+	       (j3100-cancel-special-key)
+	       (if startup-screen-mode
+		   (set-screen-mode startup-screen-mode))
+	       (if startup-cursor-mode
+		   (apply 'set-cursor-mode startup-cursor-mode))
+	       (set-keyclick nil)
+	       ))
+      (setq suspend-hook
+	    '(lambda ()
+	       (j3100-cancel-special-key)
+	       (setq old-screen-mode (get-screen-mode))
+	       (setq old-cursor-mode (get-cursor-mode))
+	       (if startup-screen-mode
+		   (set-screen-mode startup-screen-mode))
+	       (if startup-cursor-mode
+		   (apply 'set-cursor-mode startup-cursor-mode))
+	       ))
+      (setq suspend-resume-hook
+	    '(lambda ()
+	       (j3100-assign-special-key)
+	       (if old-screen-mode
+		   (set-screen-mode old-screen-mode))
+	       (if old-cursor-mode
+		   (apply 'set-cursor-mode old-cursor-mode))
+	       (if console-is-with-function-key-label
+		   (redraw-display-with-function-key-label))
+	       ))
+      ; uncomment if you wish to display function key label
+      ; (setq console-is-with-function-key-label t)
+      ; uncomment if your $TERM is not j3100 but you want to use function key
+      ; (load "term/j3100")
+      ))
+
+;;
+;; IBMPC initialization
+;;   function keys, cursor keys, meta key (by ALT)
+;;
+(if (eq dos-machine-type 'ibmpc)
+    (progn
+      (setq kill-emacs-hook
+	    '(lambda ()
+	       (ibmpc-cancel-special-key)))
+      (setq suspend-hook
+	    '(lambda ()
+	       (ibmpc-cancel-special-key)))
+      (setq suspend-resume-hook
+	    '(lambda ()
+	       (ibmpc-assign-special-key)
+	       (if console-is-with-function-key-label
+		   (redraw-display-with-function-key-label))))
+      ; uncomment if you wish to display function key label
+      ; (setq console-is-with-function-key-label t)
+      ; uncomment if your $TERM is not ibmpc but you want function key
+      ; (load "term/ibmpc")
+      ))
+
+;;; FEP Control support
+(if (boundp 'NEMACS)
+    (progn
+      (setq inhibit-fep-control nil)
+      (fep-init)
+      (global-set-key "\C-\\" 'toggle-fep-mode)
+      (global-set-key "\e " 'set-mark-command)
+      (setq suspend-hook (append (or suspend-hook '(lambda ()))
+				 '((fep-term))))
+      (setq kill-emacs-hook (append (or kill-emacs-hook '(lambda ()))
+				    '((fep-term))))
+      (setq suspend-resume-hook (append (or suspend-resume-hook '(lambda()))
+					'((fep-init) (fep-sync))))
+      ))
+
+;;
+;; enhanced dired
+;;
+(setq dired-mode-map nil)
+(load "emacs-19")
+(autoload 'dired "dired" nil t)
+; uncomment if you have unix like commands
+;(setq dired-load-hook
+;      '(lambda ()
+;	 (setq dired-ls-program "ls"
+;	       dired-chmod-program "chmod"
+;	       dired-chgrp-program "chgrp"
+;	       dired-chown-program "chown"
+;	       dired-compress-program "compress"
+;	       dired-uncompress-program "uncompress"
+;	       )))
+
+;;
+;; add binary file type
+;;
+(define-file-name-file-type "\\.lzh" 1)
+(define-file-name-file-type "\\.dvi" 1)
+
+;;
+;; completion
+;;
+(setq completion-ignored-extensions
+      (append completion-ignored-extensions
+	      '(".obj" ".exe" ".bin" ".com")))
